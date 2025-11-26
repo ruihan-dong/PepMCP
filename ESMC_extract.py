@@ -12,7 +12,7 @@ from esm.models.esmc import ESMC
 from esm.sdk.api import ESMProtein, LogitsConfig
 
 output_dir = pathlib.Path('../data/ESMC-300M/')
-df_seq = pd.read_csv('../data/test18.csv', header=None)
+df_seq = pd.read_csv('../data/test.csv', header=None)
 seqs = df_seq.iloc[:, 1].values.tolist()
 names = df_seq.iloc[:, 0].values.tolist()
 
