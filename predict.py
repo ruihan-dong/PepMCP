@@ -1,7 +1,7 @@
 import os
 os.environ["CUBLAS_WORKSPACE_CONFIG"] = ':4096:8'
 os.environ['CUDA_DEVICE_ORDER'] = 'PCI_BUS_ID'
-os.environ["CUDA_VISIBLE_DEVICES"] = '6'
+os.environ["CUDA_VISIBLE_DEVICES"] = '0'
 
 import numpy as np
 import torch
@@ -80,10 +80,25 @@ if __name__ == '__main__':
     output_dir = 'output/'
     os.makedirs(output_dir, exist_ok=True)
 
+    # regression
     for pred, info in zip(preds, pred_data):
         fp = open(os.path.join(output_dir, info['seq_id'] + '_PepMCP.txt'), 'a')
         fp.write('%s %s %s\n' % ('#', 'AA', 'MCP'))
         for i in range(pred['len']):
             fp.write('%d %s %g\n' % (i + 1, info['sequence'][i], pred['preds'][i]))
         fp.close()	
+
+    # classification mode
+    output_labels = []
+    for pred, info in zip(preds, pred_data):
+        length = pred['len']
+        values = pred['preds'][:length]
+        n_mem = np.mean(values)
+
+        if n_mem > 0.2:
+            output_labels.append(1)
+        else:
+            output_labels.append(0)
+    df_output = pd.DataFrame(output_labels, columns=['PepMCP'])
+    df_output.to_csv(os.path.join(output_dir, 'output_labels.csv'), index=False)
         
