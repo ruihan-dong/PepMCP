@@ -1,7 +1,7 @@
 import os
 os.environ["CUBLAS_WORKSPACE_CONFIG"] = ':4096:8'
 os.environ['CUDA_DEVICE_ORDER'] = 'PCI_BUS_ID'
-os.environ["CUDA_VISIBLE_DEVICES"] = '6'
+os.environ["CUDA_VISIBLE_DEVICES"] = '0'
 import numpy as np
 import torch
 
